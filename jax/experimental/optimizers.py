@@ -280,7 +280,7 @@ def rmsprop(step_size, gamma=0.9, eps=1e-8):
   def update(i, g, state):
     x, avg_sq_grad = state
     avg_sq_grad = avg_sq_grad * gamma + g**2 * (1. - gamma)
-    x = x - step_size(i) * g / (np.sqrt(avg_sq_grad) + eps)
+    x = x - step_size(i) * g / (np.sqrt(avg_sq_grad + eps))
     return x, avg_sq_grad
   def get_params(state):
     x, _ = state
@@ -315,7 +315,7 @@ def adam(step_size, b1=0.9, b2=0.999, eps=1e-8):
     v = (1 - b2) * (g ** 2) + b2 * v  # Second moment estimate.
     mhat = m / (1 - b1 ** (i + 1))  # Bias correction.
     vhat = v / (1 - b2 ** (i + 1))
-    x = x - step_size(i) * mhat / (np.sqrt(vhat) + eps)
+    x = x - step_size(i) * mhat / (np.sqrt(vhat + eps))
     return x, m, v
   def get_params(state):
     x, m, v = state
